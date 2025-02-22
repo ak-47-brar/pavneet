@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pavneet Singh - Music</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body>
     <!-- Tabs Navigation -->
@@ -37,7 +38,7 @@
                         <path d="M7.596 7.304a.802.802 0 0 1 0 1.392l-6.363 3.692C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692Z"></path>
                         <path d="M15.596 7.304a.802.802 0 0 1 0 1.392l-6.363 3.692C8.713 12.69 8 12.345 8 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692Z"></path>
                     </svg>
-                    <svg viewBox="0 0 16 16" class="color bi bi-caret-right-fill" fill="currentColor" height="18" width="18" xmlns="http://www.w3.org/2000/svg">
+                    <svg id="play-button" viewBox="0 0 16 16" class="color bi bi-caret-right-fill" fill="currentColor" height="18" width="18" xmlns="http://www.w3.org/2000/svg">
                         <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"></path>
                     </svg>
                     <svg viewBox="0 0 16 16" class="color bi bi-fast-forward-fill" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
@@ -67,11 +68,13 @@
             <div class="two"></div>
             <div class="three"></div>
         </div>
-        <audio id="music-player" autoplay>
-            <source src="https://raw.githubusercontent.com/ak-47-brar/pavneet/refs/heads/main/Brush%20Off%20-%20Cheema%20Y.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
     </div>
+
+    <!-- Audio Player (Global) -->
+    <audio id="global-audio" autoplay>
+        <source src="https://raw.githubusercontent.com/ak-47-brar/pavneet/refs/heads/main/Brush%20Off%20-%20Cheema%20Y.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
     <script>
         document.querySelectorAll('.tab-link').forEach(link => {
@@ -79,6 +82,8 @@
                 e.preventDefault();
                 const href = this.getAttribute('href');
                 document.getElementById('main-content').classList.add('fade-out');
+                localStorage.setItem('audioTime', document.getElementById('global-audio').currentTime);
+                localStorage.setItem('audioPlaying', !document.getElementById('global-audio').paused);
                 setTimeout(() => {
                     window.location.href = href;
                 }, 300);
@@ -87,9 +92,27 @@
 
         window.addEventListener('load', () => {
             document.getElementById('main-content').classList.add('fade-in');
-            const audio = document.getElementById('music-player');
-            audio.play().catch(error => {
-                console.log("Autoplay prevented:", error);
+            const audio = document.getElementById('global-audio');
+            const playButton = document.getElementById('play-button');
+            const savedTime = localStorage.getItem('audioTime') || 0;
+            const wasPlaying = localStorage.getItem('audioPlaying') === 'true';
+            audio.currentTime = parseFloat(savedTime);
+            if (wasPlaying) {
+                audio.play().catch(error => {
+                    console.log("Autoplay prevented:", error);
+                });
+            }
+
+            playButton.addEventListener('click', () => {
+                if (audio.paused) {
+                    audio.play();
+                    playButton.classList.remove('bi-caret-right-fill');
+                    playButton.classList.add('bi-pause-fill');
+                } else {
+                    audio.pause();
+                    playButton.classList.remove('bi-pause-fill');
+                    playButton.classList.add('bi-caret-right-fill');
+                }
             });
         });
     </script>
