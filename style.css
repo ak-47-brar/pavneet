@@ -318,7 +318,7 @@ body::before {
     height: 254px;
     background: lightgrey;
     border-radius: 10px;
-    margin: 0 auto; /* Center the player */
+    margin: 0 auto;
     position: relative;
 }
 
@@ -413,6 +413,12 @@ body::before {
     fill: rgba(82, 79, 79, 0.829);
 }
 
+.music-player .one .bar .color.bi-caret-right-fill,
+.music-player .one .bar .color.bi-pause-fill {
+    fill: rgba(82, 79, 79, 0.829);
+    cursor: pointer;
+}
+
 .music-player .one .bar .color1 {
     fill: rgba(29, 28, 28, 0.829);
     cursor: pointer;
@@ -471,7 +477,7 @@ body::before {
 }
 
 audio {
-    display: none; /* Hide default audio controls */
+    display: none;
 }
 
 /* Fade Animations */
