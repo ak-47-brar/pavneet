@@ -71,7 +71,7 @@
     </div>
 
     <!-- Audio Player (Global) -->
-    <audio id="global-audio" autoplay>
+    <audio id="global-audio" muted>
         <source src="https://raw.githubusercontent.com/ak-47-brar/pavneet/refs/heads/main/Brush%20Off%20-%20Cheema%20Y.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
@@ -82,8 +82,9 @@
                 e.preventDefault();
                 const href = this.getAttribute('href');
                 document.getElementById('main-content').classList.add('fade-out');
-                localStorage.setItem('audioTime', document.getElementById('global-audio').currentTime);
-                localStorage.setItem('audioPlaying', !document.getElementById('global-audio').paused);
+                const audio = document.getElementById('global-audio');
+                localStorage.setItem('audioTime', audio.currentTime);
+                localStorage.setItem('audioPlaying', !audio.paused);
                 setTimeout(() => {
                     window.location.href = href;
                 }, 300);
@@ -95,13 +96,12 @@
             const audio = document.getElementById('global-audio');
             const playButton = document.getElementById('play-button');
             const savedTime = localStorage.getItem('audioTime') || 0;
-            const wasPlaying = localStorage.getItem('audioPlaying') === 'true';
+            const wasPlaying = localStorage.getItem('audioPlaying') !== 'false'; // Default to true if not set
             audio.currentTime = parseFloat(savedTime);
-            if (wasPlaying) {
-                audio.play().catch(error => {
-                    console.log("Autoplay prevented:", error);
-                });
-            }
+            audio.muted = false; // Unmute on load
+            audio.play().catch(error => {
+                console.log("Autoplay prevented:", error);
+            });
 
             playButton.addEventListener('click', () => {
                 if (audio.paused) {
