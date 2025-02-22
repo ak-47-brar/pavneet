@@ -10,11 +10,10 @@
 body {
     font-family: Arial, sans-serif;
     min-height: 100vh;
-    position: relative; /* Required for ::before positioning */
-    overflow-y: auto; /* Allows scrolling if content overflows */
+    position: relative;
+    overflow-y: auto;
 }
 
-/* Blur background using ::before pseudo-element */
 body::before {
     content: '';
     position: absolute;
@@ -24,116 +23,317 @@ body::before {
     height: 100%;
     background: url('https://i.imgur.com/XPdjuFS.png') no-repeat center center fixed;
     background-size: cover;
-    filter: blur(5px); /* Blur effect */
-    z-index: -1; /* Places it behind content */
+    filter: blur(5px);
+    z-index: -1;
 }
 
-/* Sidenav */
-.sidenav {
-    background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent for readability */
-    color: #333;
-    border-bottom-right-radius: 25px;
-    height: 100%;
-    left: 0;
+/* Tabs Navigation from Uiverse.io by Pradeepsaranbishnoi */
+.container {
+    display: flex;
+    justify-content: center;
     padding-top: 20px;
-    position: fixed;
-    top: 0;
-    width: 250px;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1; /* Ensures it’s above blurred background */
+    z-index: 2;
+    position: relative;
 }
 
-.profile {
-    margin-bottom: 20px;
-    text-align: center;
+.tabs {
+    display: flex;
+    position: relative;
+    background-color: #fff;
+    box-shadow: 0 0 1px 0 rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 0.15);
+    padding: 0.75rem;
+    border-radius: 99px;
 }
 
-.profile img {
-    border-radius: 50%;
-    box-shadow: 0px 0px 5px 1px grey;
+.tabs * {
+    z-index: 2;
 }
 
-.name {
-    font-size: 20px;
-    font-weight: bold;
-    padding-top: 20px;
-    font-family: 'Dancing Script', cursive;
+.container input[type="radio"] {
+    display: none;
 }
 
-.job {
-    font-size: 16px;
-    font-weight: bold;
-    padding-top: 10px;
+.tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 80px;
+    font-size: 0.9rem;
+    color: black;
+    font-weight: 500;
+    border-radius: 99px;
+    cursor: pointer;
+    transition: color 0.15s ease-in;
 }
 
-.url {
-    text-align: center;
-}
-
-.url hr {
-    margin: 0 20%;
-    width: 60%;
-}
-
-.url a {
-    color: #818181;
-    display: block;
-    font-size: 20px;
-    margin: 10px 0;
-    padding: 6px 8px;
+.tab a.tab-link {
     text-decoration: none;
+    color: inherit;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.url a:hover, .url .active {
-    background-color: #e8f5ff;
-    border-radius: 28px;
-    color: #000;
-    margin-left: 14%;
-    width: 65%;
+.container input[type="radio"]:checked + label {
+    color: #185ee0;
 }
 
-/* Main */
+.container input[id="radio-1"]:checked ~ .glider {
+    transform: translateX(0);
+}
+
+.container input[id="radio-2"]:checked ~ .glider {
+    transform: translateX(100%);
+}
+
+.glider {
+    position: absolute;
+    display: flex;
+    height: 30px;
+    width: 80px;
+    background-color: #e6eef9;
+    z-index: 1;
+    border-radius: 99px;
+    transition: 0.25s ease-out;
+}
+
+@media (max-width: 700px) {
+    .tabs {
+        transform: scale(0.6);
+    }
+}
+
+/* Main Content */
 .main {
-    margin-top: 2%;
-    margin-left: 270px; /* Space for sidenav */
+    margin-top: 60px;
+    margin-left: auto;
+    margin-right: auto;
     padding: 20px;
     max-width: 600px;
-    position: relative; /* Ensures it’s above blurred background */
-    z-index: 1; /* Places it above the blurred ::before */
+    position: relative;
+    z-index: 1;
+    opacity: 0;
 }
 
 .main h2 {
     color: #333;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 24px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
-.main .card {
-    background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent for readability */
+/* Profile Picture Stack (Only for Image) */
+.browser-warning {
+    margin-bottom: 2rem;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+}
+
+@supports (aspect-ratio: 1 / 1) {
+    .browser-warning {
+        display: none;
+    }
+}
+
+.stack {
+    width: 55%;
+    max-width: 200px;
+    margin: 0 auto 20px auto;
+    transition: 0.25s ease;
+}
+
+.stack:hover {
+    transform: rotate(5deg);
+}
+
+.stack:hover .card:before {
+    transform: translateY(-2%) rotate(-4deg);
+}
+
+.stack:hover .card:after {
+    transform: translateY(2%) rotate(4deg);
+}
+
+.stack .card {
+    aspect-ratio: 3 / 2;
+    border: 4px solid #333;
+    background-color: #fff;
+    position: relative;
+    transition: 0.15s ease;
+    cursor: pointer;
+    padding: 5% 5% 15% 5%;
+}
+
+.stack .card:before,
+.stack .card:after {
+    content: "";
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 4px solid #333;
+    background-color: #fff;
+    transform-origin: center center;
+    z-index: -1;
+    transition: 0.15s ease;
+    top: 0;
+    left: 0;
+}
+
+.stack .card:before {
+    transform: translateY(-2%) rotate(-6deg);
+}
+
+.stack .card:after {
+    transform: translateY(2%) rotate(6deg);
+}
+
+.image {
+    width: 100%;
+    border: 4px solid #333;
+    background-color: #eee;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.image img {
+    display: block;
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Profile Card (Standard Card for Content) */
+.card {
+    background-color: rgba(255, 255, 255, 0.85);
     border-radius: 18px;
     box-shadow: 1px 1px 8px 0 rgba(0, 0, 0, 0.2);
-    padding: 20px;
+    padding: 25px;
     margin-bottom: 20px;
 }
 
-.main .card table {
-    border: none;
+.card-body {
+    line-height: 1.8;
+}
+
+/* Profile Sections */
+.profile-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-header h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.profile-header .name {
+    font-weight: bold;
+    color: #185ee0;
+}
+
+.profile-header .tagline {
     font-size: 16px;
-    width: 100%;
+    color: #555;
 }
 
-.main .card table td {
-    padding: 8px 0;
+.profile-interests {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-/* Social Media Marquee from Uiverse.io */
+.profile-interests p {
+    font-size: 16px;
+    color: #666;
+}
+
+.profile-bio {
+    margin-bottom: 25px;
+}
+
+.profile-bio p {
+    font-size: 16px;
+    color: #444;
+    text-align: justify;
+}
+
+.profile-quote {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.profile-quote blockquote {
+    font-family: 'Dancing Script', cursive;
+    font-size: 20px;
+    color: #222;
+    font-style: italic;
+    padding: 10px 20px;
+    background-color: rgba(230, 238, 249, 0.5);
+    border-left: 4px solid #185ee0;
+    border-radius: 8px;
+}
+
+.profile-quote strong {
+    font-weight: bold;
+    color: #333;
+}
+
+.profile-mission {
+    text-align: center;
+}
+
+.profile-mission p {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.call-to-action {
+    font-size: 18px;
+    color: #185ee0;
+    font-weight: bold;
+}
+
+/* Highlighted Text */
+.highlight {
+    font-weight: 600;
+    color: #185ee0;
+}
+
+/* Fade Animations */
+.fade-in {
+    animation: fadeIn 0.3s ease-in forwards;
+}
+
+.fade-out {
+    animation: fadeOut 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Social Media Marquee from Uiverse.io by barisdogansutcu */
 .content {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     gap: 15px;
-    width: 100%; /* Adjusted to fit card */
+    width: 100%;
     height: 100px;
     position: relative;
     overflow: hidden;
@@ -198,7 +398,7 @@ body::before {
     flex-direction: column;
     justify-content: center;
     gap: 15px;
-    min-width: 300px; /* Adjusted for fewer items */
+    min-width: 300px;
     height: 100%;
     white-space: nowrap;
     overflow: hidden;
@@ -211,8 +411,9 @@ body::before {
     100% { transform: translateX(-50%); }
 }
 
-.basic-marquee svg {
+.basic-marquee svg, .basic-marquee img {
     width: 40px;
+    height: 40px;
 }
 
 .basic-marquee button {
@@ -225,29 +426,26 @@ body::before {
     justify-content: center;
 }
 
-/* SVG Classes */
-.cls-1 { fill: #1ab7ea; }
-.cls-1, .cls-2 { fill-rule: evenodd; }
-.cls-2 { fill: #fff; }
-.cls-3 { fill: #ee8208; fill-rule: evenodd; }
-.cls-4 { fill: #fff; }
-
-/* Responsive Design */
 @media (max-width: 768px) {
-    .sidenav {
-        width: 100%;
-        height: auto;
-        position: relative;
-        border-radius: 0;
-    }
-
     .main {
-        margin-left: 0;
         max-width: 100%;
         padding: 10px;
     }
 
     .content {
         width: 100%;
+    }
+
+    .profile-header h1 {
+        font-size: 24px;
+    }
+
+    .profile-quote blockquote {
+        font-size: 18px;
+    }
+
+    .stack {
+        width: 70%;
+        max-width: 250px;
     }
 }
