@@ -59,12 +59,20 @@
         </div>
     </div>
 
+    <!-- Audio Player (Global) -->
+    <audio id="global-audio" autoplay>
+        <source src="https://raw.githubusercontent.com/ak-47-brar/pavneet/refs/heads/main/Brush%20Off%20-%20Cheema%20Y.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
     <script>
         document.querySelectorAll('.tab-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const href = this.getAttribute('href');
                 document.getElementById('main-content').classList.add('fade-out');
+                localStorage.setItem('audioTime', document.getElementById('global-audio').currentTime);
+                localStorage.setItem('audioPlaying', !document.getElementById('global-audio').paused);
                 setTimeout(() => {
                     window.location.href = href;
                 }, 300);
@@ -73,6 +81,15 @@
 
         window.addEventListener('load', () => {
             document.getElementById('main-content').classList.add('fade-in');
+            const audio = document.getElementById('global-audio');
+            const savedTime = localStorage.getItem('audioTime') || 0;
+            const wasPlaying = localStorage.getItem('audioPlaying') === 'true';
+            audio.currentTime = parseFloat(savedTime);
+            if (wasPlaying) {
+                audio.play().catch(error => {
+                    console.log("Autoplay prevented:", error);
+                });
+            }
         });
     </script>
 </body>
